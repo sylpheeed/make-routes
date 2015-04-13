@@ -1,0 +1,13 @@
+{
+  "name": "make-routes",
+  "version": "0.0.1",
+  "authors": [
+    "sylpheed <sylpheed@mail.ru>"
+  ],
+  "description": "A library for creating beautiful routes for your application",
+  "main": "make-routes.min.js",
+  "keywords": [
+    "routes"
+  ],
+  "license": "MIT"
+}

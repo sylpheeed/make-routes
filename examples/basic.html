@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Make Routes example</title>
+  <script src="../make-routes.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div>
+    <h5>Route examples:</h5>
+    <table id="routes-field" class="table">
+      <thead>
+      <tr>
+        <th>Route</th>
+        <th>Path</th>
+        <th>Function execution result</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+  <hr/>
+  <div>
+    <h5>Route build examples:</h5>
+    <table id="routes-build-field" class="table">
+      <thead>
+      <tr>
+        <th>Route</th>
+        <th>Path</th>
+        <th>Build path condition</th>
+        <th>Build path result</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <hr/>
+    <h4 class="text-center">Also please open and view your console</h4>
+  </div>
+</div>
+
+<script>
+  var routes = {
+    user: {
+      show: function () {
+        return 'this is /user/:id';
+      },
+      index: function () {
+        return 'this is /user';
+      },
+      friends: function () {
+        return 'this is /user/friends';
+      },
+      collection: {
+        albums: function () {
+          return 'this is /user/:user_id/albums';
+        }
+      }
+    },
+    tasks: {
+      path: '/super-tasks',
+      home: {
+        path: '/home-task',
+        to: function () {
+          return 'this is /super-tasks/home-task';
+        }
+      },
+      other: {
+        teaching: function () {
+          return 'this is /super-tasks/other/teaching';
+        }
+      },
+      collection: {
+        shop: {
+          path: '/shop',
+          to: function () {
+            return 'this is /super-tasks/:super-tasks_id/shop'
+          }
+        }
+      }
+    }
+  };
+  var routed = MakeRoutes.init(routes);
+  console.info('Routes JSON: ', routes);
+  console.info('MakeRoutes result: ', MakeRoutes.all());
+  console.info('Type MakeRoutes.route("user_show") or MakeRoutes.route("user_albums", {user_id: 1})');
+
+
+  var routesField = $('#routes-field').find('tbody');
+  var routesBuildField = $('#routes-build-field').find('tbody');
+  var allRoutes = MakeRoutes.all();
+  for (var route in allRoutes) {
+    var result = allRoutes[route].to();
+    routesField.append('<tr><td>' + route + '</td><td>' + allRoutes[route].path + '</td><td>' + result + '</td></tr>');
+  }
+
+  var routeTest = allRoutes.user_friends;
+  routesBuildField.append('<tr><td>user_friends</td><td>' + routeTest.path + '</td>' +
+  '<td>MakeRoutes.route("user_friends")</td><td>' + MakeRoutes.route('user_friends') + '</td></tr>');
+
+  routeTest = allRoutes.user_show;
+  routesBuildField.append('<tr><td>user_show</td><td>' + routeTest.path + '</td>' +
+  '<td>MakeRoutes.route("user_show", {id: 1})</td><td>' + MakeRoutes.route('user_show', {id: 1}) + '</td></tr>');
+
+  routeTest = allRoutes.user_index;
+  routesBuildField.append('<tr><td>user_index</td><td>' + routeTest.path + '</td>' +
+  '<td>MakeRoutes.route("user_index")</td><td>' + MakeRoutes.route('user_index') + '</td></tr>');
+
+  routeTest = allRoutes.user_albums;
+  routesBuildField.append('<tr><td>user_albums</td><td>' + routeTest.path + '</td>' +
+  '<td>MakeRoutes.route("user_albums", {user_id: 1})</td><td>' + MakeRoutes.route('user_albums', {user_id: 1}) + '</td></tr>');
+
+</script>
+
+</body>
+</html>
