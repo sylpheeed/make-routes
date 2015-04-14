@@ -1,0 +1,18 @@
+{
+  "name": "make-routes",
+  "version": "1.0.0",
+  "description": "JavaScript library for creating beautiful routes for your application",
+  "main": "src/make-routes.npm.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sylpheeed/make-routes"
+  },
+  "author": "Sharaskin Sergey",
+  "license": "MIT"
+}
