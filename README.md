@@ -2,7 +2,7 @@
 
 **This library is only wrapper for other navigation library like [page.js](https://github.com/visionmedia/page.js), [routie](https://github.com/jgallen23/routie) and etc.**
 
-Make-rotes is a small(1.6kb) JavaScript library for creating beautiful routes in object style!
+Make-routes is a small(1.6kb) JavaScript library for creating beautiful routes in object style!
 
 
 
@@ -102,10 +102,10 @@ You can also specify your own path
 ```javascript
 var routes = MakeRoutes.init({
     user: {
-      path: '/superfriends'
+      path: '/superuser'
       friends: {
         actived: function(){
-         //... do something when route is /user/superfriends/actived
+         //... do something when route is /superuser/friends/actived
         }
       }
     },
@@ -114,7 +114,7 @@ var routes = MakeRoutes.init({
  console.log(MakeRoutes.all());
  //=>
  // {
- //   user_friends_actived: {path: '/user/superfriends/actived', to: function(){...}}, 
+ //   user_friends_actived: {path: '/superuser/friends/actived', to: function(){...}}, 
  // }
 ```
 
