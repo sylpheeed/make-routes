@@ -33,7 +33,7 @@ var routes = MakeRoutes.init({
  // }
 ```
 
-### Working with rescources
+### Working with resources
 ```javascript
 var routes = MakeRoutes.init({
     user: {
@@ -119,6 +119,9 @@ var routes = MakeRoutes.init({
 ```
 
 ### Route building
+
+Route building helps easy to build urls for use in your application.
+
 ```javascript
 var routes = MakeRoutes.init({
     user: {
