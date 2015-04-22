@@ -1,6 +1,6 @@
 {
   "name": "make-routes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript library for creating beautiful routes for your application",
   "main": "src/make-routes.npm.js",
   "directories": {
@@ -13,7 +13,15 @@
     "type": "git",
     "url": "https://github.com/sylpheeed/make-routes"
   },
+  "keywords": [
+    "routes",
+    "js"
+  ],
   "author": "Sharaskin Sergey",
   "email": "sylpheed@mail.ru",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sylpheeed/make-routes/issues"
+  },
+  "homepage": "https://github.com/sylpheeed/make-routes"
 }
