@@ -11,22 +11,28 @@ Examples:
 
 # Usage
 
-### Including file:
+### Installation
+
+#### Via include script
 ```html
  <script src="make-routes.min.js"></script>
 ```
 
+#### Via npm
+```
+ npm install make-routes
+```
 ### Basic usage
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      friends: function () {
-        //... do something when route is /user/friends
-      },
-    },
-  });
+MakeRoutes.init({
+ user: {
+  friends: function () {
+   //... do something when route is /user/friends
+  },
+ },
+});
   
- console.log(MakeRoutes.all());
+console.log(MakeRoutes.all());
  //=>
  // {
  //   user_friends: {path: '/user/friends', to: function(){...}}
@@ -35,21 +41,21 @@ var routes = MakeRoutes.init({
 
 ### Working with resources
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      show: function () {
-        //... do something when route is /user/:id
-      },
-      index: function () {
-        //... do something when route is /user
-      },
-      new: function(){
-        //... do something when route is /user/new
-      },
+MakeRoutes.init({
+  user: {
+   show: function () {
+     //... do something when route is /user/:id
+   },
+   index: function () {
+     //... do something when route is /user
     },
-  });
+    new: function(){
+     //... do something when route is /user/new
+    },
+  },
+});
   
-  console.log(MakeRoutes.all());
+console.log(MakeRoutes.all());
  //=>
  // {
  //   user_show: {path: '/user/:id', to: function(){...}}, 
@@ -60,17 +66,17 @@ var routes = MakeRoutes.init({
 
 ### Working with collection
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      collection: {
-        albums: function () {
-          //... do something when route is /user/:user_id/albums
-        }
+MakeRoutes.init({
+  user: {
+    collection: {
+      albums: function () {
+        //... do something when route is /user/:user_id/albums
       }
-    },
-  });
+    }
+  },
+});
   
- console.log(MakeRoutes.all());
+console.log(MakeRoutes.all());
  //=>
  // {
  //   user_albums: {path: '/user/:user_id/albums', to: function(){...}}, 
@@ -79,17 +85,17 @@ var routes = MakeRoutes.init({
 
 ### Nesting support
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      friends: {
-        actived: function(){
-         //... do something when route is /user/friends/actived
-        }
+MakeRoutes.init({
+  user: {
+    friends: {
+      actived: function(){
+        //... do something when route is /user/friends/actived
       }
-    },
-  });
+    }
+  },
+});
   
- console.log(MakeRoutes.all());
+console.log(MakeRoutes.all());
  //=>
  // {
  //   user_friends_actived: {path: '/user/friends/actived', to: function(){...}}, 
@@ -100,18 +106,18 @@ You can also specify your own path
 
 ### Specify your own path
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      path: '/superuser'
+MakeRoutes.init({
+  user: {
+    path: '/superuser'
       friends: {
         actived: function(){
          //... do something when route is /superuser/friends/actived
-        }
       }
-    },
-  });
+    }
+  },
+});
   
- console.log(MakeRoutes.all());
+console.log(MakeRoutes.all());
  //=>
  // {
  //   user_friends_actived: {path: '/superuser/friends/actived', to: function(){...}}, 
@@ -123,17 +129,17 @@ var routes = MakeRoutes.init({
 Route building helps easy to build urls for use in your application.
 
 ```javascript
-var routes = MakeRoutes.init({
-    user: {
-      collection: {
-        albums: function () {
-          //... do something when route is /user/:user_id/albums
-        }
+MakeRoutes.init({
+  user: {
+    collection: {
+      albums: function () {
+        //... do something when route is /user/:user_id/albums
       }
-    },
-  });
+    }
+  },
+});
   
- console.log(MakeRoutes.route('user_albums', {user_id: 1}));
+console.log(MakeRoutes.route('user_albums', {user_id: 1}));
  //=> /user/1/albums
 ```
 
