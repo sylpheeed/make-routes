@@ -1,14 +1,12 @@
 # make-routes
 
-**This library is only wrapper for other navigation library like [page.js](https://github.com/visionmedia/page.js), [routie](https://github.com/jgallen23/routie) and etc.**
-
 Make-routes is a small(1.6kb) JavaScript library for creating beautiful routes in object style!
 
-
+**This library is only wrapper for other navigation library like [page.js](https://github.com/visionmedia/page.js), [routie](https://github.com/jgallen23/routie) and etc.**
 
 Examples:
-[demo](http://sylpheeed.github.io/make-routes/examples/)
-[react+page.js+make-routes](https://make-routes.herokuapp.com/)
+- [demo](http://sylpheeed.github.io/make-routes/examples/)
+- [react+page.js+make-routes](https://make-routes.herokuapp.com/)
 
 # Usage
 
