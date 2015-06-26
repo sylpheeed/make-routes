@@ -91,6 +91,11 @@
             return 'this is /super-tasks/:super-tasks_id/shop'
           }
         }
+      },
+      collection: {
+        show: function () {
+          return 'this is /super-tasks/:super-tasks_id/shop'
+        }
       }
     }
   };
@@ -111,19 +116,20 @@
 
   var routeTest = allRoutes.user_friends;
   routesBuildField.append('<tr><td>user_friends</td><td>' + routeTest.path + '</td>' +
-  '<td>MakeRoutes.route("user_friends")</td><td>' + MakeRoutes.route('user_friends') + '</td></tr>');
+    '<td>MakeRoutes.route("user_friends")</td><td>' + MakeRoutes.route('user_friends') + '</td></tr>');
 
   routeTest = allRoutes.user_show;
   routesBuildField.append('<tr><td>user_show</td><td>' + routeTest.path + '</td>' +
-  '<td>MakeRoutes.route("user_show", {id: 1})</td><td>' + MakeRoutes.route('user_show', {id: 1}) + '</td></tr>');
+    '<td>MakeRoutes.route("user_show", {id: 1})</td><td>' + MakeRoutes.route('user_show', {id: 1}) + '</td></tr>');
 
   routeTest = allRoutes.user_index;
   routesBuildField.append('<tr><td>user_index</td><td>' + routeTest.path + '</td>' +
-  '<td>MakeRoutes.route("user_index")</td><td>' + MakeRoutes.route('user_index') + '</td></tr>');
+    '<td>MakeRoutes.route("user_index")</td><td>' + MakeRoutes.route('user_index') + '</td></tr>');
 
   routeTest = allRoutes.user_albums;
   routesBuildField.append('<tr><td>user_albums</td><td>' + routeTest.path + '</td>' +
-  '<td>MakeRoutes.route("user_albums", {user_id: 1})</td><td>' + MakeRoutes.route('user_albums', {user_id: 1}) + '</td></tr>');
+    '<td>MakeRoutes.route("user_albums", {user_id: 1})</td><td>' + MakeRoutes.route('user_albums',
+      {user_id: 1}) + '</td></tr>');
 
 </script>
 

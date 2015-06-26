@@ -86,6 +86,33 @@ console.log(MakeRoutes.all());
  // }
 ```
 
+### Working with collection
+```javascript
+MakeRoutes.init({
+  user: {
+    collection: {
+      index: function () {
+        //... do something when route is /user/index
+      },
+      show: function () {
+        //... do something when route is /user/show
+      },
+      edit: function () {
+        //... do something when route is /user/edit
+      }
+    }
+  },
+});
+  
+console.log(MakeRoutes.all());
+ //=>
+ // {
+ //   user_index: {path: '/user/index', to: function(){...}},
+ //   user_show: {path: '/user/show', to: function(){...}},
+ //   user_edit: {path: '/user/edit', to: function(){...}},
+ // }
+```
+
 ### Nesting support
 ```javascript
 MakeRoutes.init({

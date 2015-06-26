@@ -13,32 +13,47 @@ var MakeRoutes = (function () {
       new_path = path ? '' + path + '/' + hashKey : hashKey;
     }
 
-    function addMember(key) {
-      var memberPath = '' + new_path + '/:' + hashKey + '_id';
-      var member = hash[key];
-      for (var memberKey in member) {
+    function makeResult(path, obj) {
+      for (var key in obj) {
         var to = false;
-        if (check(member[memberKey]).isFunction()) {
-          to = member[memberKey];
-        } else if (member[memberKey].to) {
-          to = member[memberKey].to;
-          memberKey = routeToPath(member[memberKey]) || memberKey;
+        if (check(obj[key]).isFunction()) {
+          to = obj[key];
+        } else if (obj[key].to) {
+          to = obj[key].to;
+          key = routeToPath(obj[key]) || key;
         }
-        result[memberKey] = setResult(memberPath, memberKey, to);
+        var argsArray = [].slice.call(arguments, 2);
+        result[key] = setResult.apply(this, [path, key, to].concat(argsArray));
       }
     }
 
+    function addMember(key) {
+      var memberPath = '' + new_path + '/:' + hashKey + '_id';
+      var member = hash[key];
+      makeResult(memberPath, member);
+    }
+
+    function addCollection(key) {
+      var collectionPath = new_path;
+      var collection = hash[key];
+      makeResult(collectionPath, collection, true);
+    }
+
     function setResult(path, action, to) {
-      switch (action) {
-        case 'show':
-          action = ':id';
-          break;
-        case 'edit':
-          action = ':id/edit';
-          break;
-        case 'index':
-          action = false;
-          break;
+      var collection = arguments[3];
+
+      if (!collection) {
+        switch (action) {
+          case 'show':
+            action = ':id';
+            break;
+          case 'edit':
+            action = ':id/edit';
+            break;
+          case 'index':
+            action = false;
+            break;
+        }
       }
 
       if (!path) {
@@ -60,6 +75,8 @@ var MakeRoutes = (function () {
           result[key] = setResult(new_path, _path, current.to);
         } else if (check(key).isMember()) {
           addMember(key);
+        } else if (check(key).isCollection()) {
+          addCollection(key);
         } else {
           result[key] = makePaths(hash[key], new_path, _path);
         }
@@ -154,7 +171,7 @@ var MakeRoutes = (function () {
     },
     showRoutes: function routes() {
       var resultRoutes = {};
-      for(var route in _routes){
+      for (var route in _routes) {
         resultRoutes[route] = _routes[route].path;
       }
       return resultRoutes;
