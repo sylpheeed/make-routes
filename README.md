@@ -8,6 +8,7 @@ Make-routes is a small(1.6kb) JavaScript library for creating beautiful routes i
 
 Examples:
 [demo](http://sylpheeed.github.io/make-routes/examples/)
+[react+page.js+make-routes](https://make-routes.herokuapp.com/)
 
 # Usage
 
