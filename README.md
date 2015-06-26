@@ -43,15 +43,18 @@ console.log(MakeRoutes.all());
 ```javascript
 MakeRoutes.init({
   user: {
+   index: function () {
+     //... do something when route is /user
+   },
    show: function () {
      //... do something when route is /user/:id
    },
-   index: function () {
-     //... do something when route is /user
-    },
-    new: function(){
+   edit: function(){
+     //... do something when route is /user/:id/edit
+   },
+   new: function(){
      //... do something when route is /user/new
-    },
+   },
   },
 });
   
@@ -64,11 +67,11 @@ console.log(MakeRoutes.all());
  // }
 ```
 
-### Working with collection
+### Working with member
 ```javascript
 MakeRoutes.init({
   user: {
-    collection: {
+    member: {
       albums: function () {
         //... do something when route is /user/:user_id/albums
       }
@@ -141,5 +144,24 @@ MakeRoutes.init({
   
 console.log(MakeRoutes.route('user_albums', {user_id: 1}));
  //=> /user/1/albums
+```
+
+### ShowRoutes helper
+
+```javascript
+MakeRoutes.init({
+  index: function () {},
+  show: function () {},
+  edit: function () {},
+  new: function () {}
+});
+  
+console.log(MakeRoutes.showRoutes());
+ //=> {
+ //=> user_index: "/user"
+ //=> user_show: "/user/:id"
+ //=> user_edit: "/user/:id/edit"
+ //=> user_new: "/user/new"
+ //=> }
 ```
 

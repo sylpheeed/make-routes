@@ -50,16 +50,22 @@
 <script>
   var routes = {
     user: {
+      index: function () {
+        return 'this is /user';
+      },
       show: function () {
         return 'this is /user/:id';
       },
-      index: function () {
-        return 'this is /user';
+      edit: function () {
+        return 'this is /user/:id/edit';
+      },
+      new: function () {
+        return 'this is /user/new';
       },
       friends: function () {
         return 'this is /user/friends';
       },
-      collection: {
+      member: {
         albums: function () {
           return 'this is /user/:user_id/albums';
         }
@@ -78,7 +84,7 @@
           return 'this is /super-tasks/other/teaching';
         }
       },
-      collection: {
+      member: {
         shop: {
           path: '/shop',
           to: function () {
@@ -92,6 +98,7 @@
   console.info('Routes JSON: ', routes);
   console.info('MakeRoutes result: ', MakeRoutes.all());
   console.info('Type MakeRoutes.route("user_show") or MakeRoutes.route("user_albums", {user_id: 1})');
+  console.warn('Routes: ', MakeRoutes.showRoutes());
 
 
   var routesField = $('#routes-field').find('tbody');
