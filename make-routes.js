@@ -169,7 +169,7 @@ var MakeRoutes = (function () {
     all: function all() {
       return _routes;
     },
-    showRoutes: function routes() {
+    showRoutes: function showRoutes() {
       var resultRoutes = {};
       for (var route in _routes) {
         resultRoutes[route] = _routes[route].path;

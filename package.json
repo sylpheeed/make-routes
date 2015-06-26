@@ -1,6 +1,6 @@
 {
   "name": "make-routes",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "JavaScript library for creating beautiful routes for your application",
   "main": "src/make-routes.npm.js",
   "directories": {

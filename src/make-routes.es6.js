@@ -11,29 +11,46 @@ export default (function () {
     }
 
 
-    function addCollection(key) {
-      let collectionPath = `${new_path}/:${hashKey}_id`;
-      let collection = hash[key];
-      for (let collectionKey in collection) {
+    function makeResult(path, obj) {
+      for (var key in obj) {
         let to = false;
-        if (check(collection[collectionKey]).isFunction()) {
-          to = collection[collectionKey]
-        } else if (collection[collectionKey].to) {
-          to = collection[collectionKey].to;
-          collectionKey = routeToPath(collection[collectionKey]) || collectionKey;
+        if (check(obj[key]).isFunction()) {
+          to = obj[key];
+        } else if (obj[key].to) {
+          to = obj[key].to;
+          key = routeToPath(obj[key]) || key;
         }
-        result[collectionKey] = setResult(collectionPath, collectionKey, to);
+        let argsArray = [].slice.call(arguments, 2);
+        result[key] = setResult.apply(this, [path, key, to].concat(argsArray));
       }
     }
 
-    function setResult(path, action, to) {
-      switch (action) {
-        case 'show':
-          action = ':id';
-          break;
-        case 'index':
-          action = false;
-          break;
+    function addMember(key) {
+      let memberPath = '' + new_path + '/:' + hashKey + '_id';
+      let member = hash[key];
+      makeResult(memberPath, member);
+    }
+
+    function addCollection(key) {
+      let collectionPath = new_path;
+      let collection = hash[key];
+      makeResult(collectionPath, collection, true);
+    }
+
+    function setResult(path, action, to, collection = false) {
+
+      if (!collection) {
+        switch (action) {
+          case 'show':
+            action = ':id';
+            break;
+          case 'edit':
+            action = ':id/edit';
+            break;
+          case 'index':
+            action = false;
+            break;
+        }
       }
 
       if (!path) {
@@ -53,6 +70,8 @@ export default (function () {
         let path = current.path ? routeToPath(current) : key;
         if (current.to) {
           result[key] = setResult(new_path, path, current.to);
+        } else if (check(key).isMember()) {
+          addMember(key);
         } else if (check(key).isCollection()) {
           addCollection(key);
         } else {
@@ -98,8 +117,11 @@ export default (function () {
       isEmpty: function() {
         return Object.keys(value).length === 0;
       },
+      isMember: function() {
+        return value === 'member';
+      },
       isCollection: function() {
-        return value === 'collection'
+        return value === 'collection';
       }
     }
   }
@@ -145,6 +167,13 @@ export default (function () {
     },
     all: function () {
       return _routes;
+    },
+    showRoutes: function() {
+      let resultRoutes = {};
+      for (var route in _routes) {
+        resultRoutes[route] = _routes[route].path;
+      }
+      return resultRoutes;
     },
     route: function (key, params) {
       return buildRoute(key, params);
