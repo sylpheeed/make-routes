@@ -1,6 +1,8 @@
 module.exports = (function () {
+
   var paths = undefined;
   var _routes = undefined;
+  var _extra = false;
 
   function makePaths(hash) {
     var path = arguments[1] === undefined ? '' : arguments[1];
@@ -12,7 +14,7 @@ module.exports = (function () {
       new_path = path ? '' + path + '/' + hashKey : hashKey;
     }
 
-    function makeResult(path, obj) {
+    function collectResult(path, obj) {
       for (var key in obj) {
         var to = false;
         if (check(obj[key]).isFunction()) {
@@ -29,13 +31,13 @@ module.exports = (function () {
     function addMember(key) {
       var memberPath = '' + new_path + '/:' + hashKey + '_id';
       var member = hash[key];
-      makeResult(memberPath, member);
+      collectResult(memberPath, member);
     }
 
     function addCollection(key) {
       var collectionPath = new_path;
       var collection = hash[key];
-      makeResult(collectionPath, collection, true);
+      collectResult(collectionPath, collection, true);
     }
 
     function setResult(path, action, to) {
@@ -61,20 +63,30 @@ module.exports = (function () {
       }
 
       path = action ? '/' + path + '/' + action : '/' + path;
-      return {path: path, to: to};
+      var res = {path: path, to: to};
+      if (_extra) {
+        res._extra = _extra;
+      }
+      return res;
     }
 
     for (var key in hash) {
+      _extra = false;
       var current = hash[key];
-      if (check(current).isFunction()) {
+      var type = check(current);
+      //Check if type is string or function, send it to final result if not then go deeper
+      if (type.isFunction() || type.isString()) {
         result[key] = setResult(new_path, key, current);
-      } else if (check(current).isObject()) {
+      } else if (type.isObject()) {
+        //Check for extra params;
+        _extra = current._extra ? current._extra : false;
         var _path = current.path ? routeToPath(current) : key;
+        type = check(key);
         if (current.to) {
           result[key] = setResult(new_path, _path, current.to);
-        } else if (check(key).isMember()) {
+        } else if (type.isMember()) {
           addMember(key);
-        } else if (check(key).isCollection()) {
+        } else if (type.isCollection()) {
           addCollection(key);
         } else {
           result[key] = makePaths(hash[key], new_path, _path);
@@ -91,6 +103,7 @@ module.exports = (function () {
     for (var objKey in obj) {
       var current = obj[objKey];
       var result = false;
+      var _extra = false;
       if (current.path) {
         result = {path: current.path, to: current.to};
         delete obj[objKey].path;
@@ -99,8 +112,16 @@ module.exports = (function () {
 
       var resultKey = key ? '' + key + '_' + objKey : objKey;
 
+      if (obj[objKey]._extra) {
+        _extra = obj[objKey]._extra;
+        delete obj[objKey]._extra;
+      }
+
       if (check(obj[objKey]).isEmpty()) {
         paths[resultKey] = result;
+        if (_extra) {
+          paths[resultKey]._extra = _extra;
+        }
       } else {
         makeRoutes(obj[objKey], resultKey);
         delete obj[objKey];
@@ -112,6 +133,9 @@ module.exports = (function () {
     return {
       isFunction: function isFunction() {
         return typeof value === 'function';
+      },
+      isString: function isFunction() {
+        return typeof value === 'string';
       },
       isObject: function isObject() {
         return value !== null && typeof value === 'object';
@@ -168,7 +192,7 @@ module.exports = (function () {
     all: function all() {
       return _routes;
     },
-    showRoutes: function routes() {
+    showRoutes: function showRoutes() {
       var resultRoutes = {};
       for (var route in _routes) {
         resultRoutes[route] = _routes[route].path;

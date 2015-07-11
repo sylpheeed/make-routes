@@ -2,6 +2,7 @@ export default (function () {
 
   let paths;
   let _routes;
+  let _extra;
 
   function makePaths(hash, path = '', hashKey = false) {
     let result = {};
@@ -59,23 +60,33 @@ export default (function () {
       }
 
       path = action ? `/${path}/${action}` : `/${path}`;
-      return {path: path, to: to};
+      let res = {path: path, to: to};
+      if (_extra) {
+        res._extra = _extra;
+      }
+      return res;
     }
 
     for (let key in hash) {
+      _extra = false;
       let current = hash[key];
-      if (check(current).isFunction()) {
+      let type = check(current);
+      //Check if type is string or function, send it to final result if not then go deeper
+      if (type.isFunction() || type.isString()) {
         result[key] = setResult(new_path, key, current);
-      } else if (check(current).isObject()) {
-        let path = current.path ? routeToPath(current) : key;
+      } else if (type.isObject()) {
+        //Check for extra params;
+        _extra = current._extra ? current._extra : false;
+        let _path = current.path ? routeToPath(current) : key;
+        type = check(key);
         if (current.to) {
-          result[key] = setResult(new_path, path, current.to);
-        } else if (check(key).isMember()) {
+          result[key] = setResult(new_path, _path, current.to);
+        } else if (type.isMember()) {
           addMember(key);
-        } else if (check(key).isCollection()) {
+        } else if (type.isCollection()) {
           addCollection(key);
         } else {
-          result[key] = makePaths(hash[key], new_path, path);
+          result[key] = makePaths(hash[key], new_path, _path);
         }
       }
     }
@@ -87,6 +98,7 @@ export default (function () {
     for (let objKey in obj) {
       let current = obj[objKey];
       let result = false;
+      let _extra = false;
       if (current.path) {
         result = {path: current.path, to: current.to};
         delete obj[objKey].path;
@@ -95,8 +107,16 @@ export default (function () {
 
       let resultKey = key ? `${key}_${objKey}` : objKey;
 
+      if (obj[objKey]._extra) {
+        _extra = obj[objKey]._extra;
+        delete obj[objKey]._extra;
+      }
+
       if (check(obj[objKey]).isEmpty()) {
         paths[resultKey] = result;
+        if (_extra) {
+          paths[resultKey]._extra = _extra;
+        }
       } else {
         makeRoutes(obj[objKey], resultKey);
         delete obj[objKey];
@@ -110,6 +130,9 @@ export default (function () {
     return {
       isFunction: function() {
         return typeof value === 'function';
+      },
+      isString: function isFunction() {
+        return typeof value === 'string';
       },
       isObject: function() {
         return value !== null && typeof value === 'object';

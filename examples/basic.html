@@ -49,6 +49,7 @@
 
 <script>
   var routes = {
+    root: {path: '/', to: '/index.html'},
     user: {
       index: function () {
         return 'this is /user';
@@ -64,6 +65,14 @@
       },
       friends: function () {
         return 'this is /user/friends';
+      },
+      string_route: 'some string for test',
+      with_extra_params: {
+        to: function () {
+          return 'this is with_extra_params'
+        },
+        //Extra params
+        _extra: {param1: 1, param2: 2}
       },
       member: {
         albums: function () {
@@ -110,7 +119,14 @@
   var routesBuildField = $('#routes-build-field').find('tbody');
   var allRoutes = MakeRoutes.all();
   for (var route in allRoutes) {
-    var result = allRoutes[route].to();
+
+    var result;
+    if (typeof allRoutes[route].to == 'function') {
+      result = allRoutes[route].to();
+    } else {
+      result = allRoutes[route].to;
+    }
+
     routesField.append('<tr><td>' + route + '</td><td>' + allRoutes[route].path + '</td><td>' + result + '</td></tr>');
   }
 

@@ -172,6 +172,32 @@ console.log(MakeRoutes.route('user_albums', {user_id: 1}));
  //=> /user/1/albums
 ```
 
+### Extra params
+
+You can add and specify your own extra params
+
+```javascript
+MakeRoutes.init({
+  root: {path: '/', to:'/index.html'},
+  user: {
+    to: '/user.html',
+    _extra: {first: 1, second: 2}
+  },
+  post: {
+    to: '/post.html',
+    _extra: 'some string'
+  },
+});
+  
+console.log(MakeRoutes.all());
+ //=>
+ // {
+ //   root: {path: "/", to: "/index.html"},
+ //   user: {_extra: {first: 1, second: 2}, path: "/user", to: "/user.html"},
+ //   post: {_extra: "some string", path: "/post", to: "/post.html"}, 
+ // }
+```
+
 ### ShowRoutes helper
 
 ```javascript
