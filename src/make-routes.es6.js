@@ -184,22 +184,35 @@ export default (function () {
     _routes = paths;
   }
 
-  return {
-    init: function (hash) {
-      buildRoutes(hash);
-    },
-    all: function () {
-      return _routes;
-    },
-    showRoutes: function() {
+
+  let helpers = {
+    showRoutes: function () {
       let resultRoutes = {};
-      for (var route in _routes) {
+      for (let route in _routes) {
         resultRoutes[route] = _routes[route].path;
       }
       return resultRoutes;
     },
-    route: function (key, params) {
-      return buildRoute(key, params);
+    each: function (callback, any) {
+      for (let route in _routes) {
+        callback(_routes[route], route);
+      }
+      if (any) {
+        any();
+      }
     }
+  };
+
+  return {
+    init: function init(hash) {
+      buildRoutes(hash);
+      return this;
+    },
+    all: function all() {
+      return _routes;
+    },
+    route: buildRoute,
+    showRoutes: helpers.showRoutes,
+    each: helpers.each
   };
 })();

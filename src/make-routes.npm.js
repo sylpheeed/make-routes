@@ -185,22 +185,34 @@ module.exports = (function () {
     _routes = paths;
   }
 
-  return {
-    init: function init(hash) {
-      buildRoutes(hash);
-    },
-    all: function all() {
-      return _routes;
-    },
-    showRoutes: function showRoutes() {
+  var helpers = {
+    showRoutes: function () {
       var resultRoutes = {};
       for (var route in _routes) {
         resultRoutes[route] = _routes[route].path;
       }
       return resultRoutes;
     },
-    route: function route(key, params) {
-      return buildRoute(key, params);
+    each: function (callback, any) {
+      for (var route in _routes) {
+        callback(_routes[route], route);
+      }
+      if (any) {
+        any();
+      }
     }
+  };
+
+  return {
+    init: function init(hash) {
+      buildRoutes(hash);
+      return this;
+    },
+    all: function all() {
+      return _routes;
+    },
+    route: buildRoute,
+    showRoutes: helpers.showRoutes,
+    each: helpers.each
   };
 })();

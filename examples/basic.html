@@ -117,18 +117,19 @@
 
   var routesField = $('#routes-field').find('tbody');
   var routesBuildField = $('#routes-build-field').find('tbody');
-  var allRoutes = MakeRoutes.all();
-  for (var route in allRoutes) {
-
+  MakeRoutes.each(function (route, key) {
     var result;
-    if (typeof allRoutes[route].to == 'function') {
-      result = allRoutes[route].to();
+    if (typeof route.to == 'function') {
+      result = route.to();
     } else {
-      result = allRoutes[route].to;
+      result = route.to;
     }
 
-    routesField.append('<tr><td>' + route + '</td><td>' + allRoutes[route].path + '</td><td>' + result + '</td></tr>');
-  }
+    routesField.append('<tr><td>' + key + '</td><td>' + route.path + '</td><td>' + result + '</td></tr>');
+  });
+
+
+  var allRoutes = MakeRoutes.all();
 
   var routeTest = allRoutes.user_friends;
   routesBuildField.append('<tr><td>user_friends</td><td>' + routeTest.path + '</td>' +
@@ -147,6 +148,19 @@
     '<td>MakeRoutes.route("user_albums", {user_id: 1})</td><td>' + MakeRoutes.route('user_albums',
       {user_id: 1}) + '</td></tr>');
 
+
+  MakeRoutes.init({
+    user: {
+      index: 'index!',
+      show: 'show!',
+      edit: 'edit!',
+      new: 'new!'
+    }
+  }).each(function (route, key) {
+    console.warn('Route: ', route, 'Key:', key);
+  }, function () {
+    console.warn('Action for any route... ');
+  });
 </script>
 
 </body>

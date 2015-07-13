@@ -202,10 +202,12 @@ console.log(MakeRoutes.all());
 
 ```javascript
 MakeRoutes.init({
-  index: function () {},
-  show: function () {},
-  edit: function () {},
-  new: function () {}
+  user: {  
+    index: function () {},
+    show: function () {},
+    edit: function () {},
+    new: function () {}
+  }
 });
   
 console.log(MakeRoutes.showRoutes());
@@ -215,5 +217,28 @@ console.log(MakeRoutes.showRoutes());
  //=> user_edit: "/user/:id/edit"
  //=> user_new: "/user/new"
  //=> }
+```
+
+### Each helper
+
+```javascript
+MakeRoutes.init({
+  user: {
+    index: 'index!',
+    show: 'show!',
+    edit: 'edit!',
+    new: 'new!'
+  }
+}).each(function (route, key) {
+  console.log('Route: ', route, 'Key:', key);
+}, function () {
+  console.log('Action for any route... ');
+});
+  
+//=> Route:  Object {path: "/user", to: "index!"} Key: index
+//=> Route:  Object {path: "/user/:id", to: "show!"} Key: show
+//=> Route:  Object {path: "/user/:id/edit", to: "edit!"} Key: edit
+//=> Route:  Object {path: "/user/new", to: "new!"} Key: new
+//=> Action for any route... 
 ```
 
